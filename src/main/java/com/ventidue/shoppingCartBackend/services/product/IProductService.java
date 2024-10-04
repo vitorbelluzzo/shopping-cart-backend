@@ -18,16 +18,5 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String category, String name);
     Long countProductByBrandAndName(String brand, String name);
-    Product updateProductPrice(Long productId, BigDecimal newPrice);
-    void updateProductInventory(Long productId, Integer newInventory);
-    List<Product> getProductsInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
-    List<Product> searchProducts(String keyword);
-    List<Product> getTopSellingProducts(int limit);
-    void addImageToProduct(Long productId, Image image);
-    void removeImageFromProduct(Long productId, Long imageId);
-    List<Product> getProductsByPopularity();
-    List<Product> getProductsByRating(Double minRating);
-    void clearInventory(Long productId);
-    void markProductAsFeatured(Long productId);
-    void unmarkProductAsFeatured(Long productId);
+
 }

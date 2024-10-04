@@ -4,15 +4,18 @@ import com.ventidue.shoppingCartBackend.exceptions.ProductNotFoundException;
 import com.ventidue.shoppingCartBackend.models.Image;
 import com.ventidue.shoppingCartBackend.models.Product;
 import com.ventidue.shoppingCartBackend.repositories.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class ProductService implements IProductService{
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
 
     @Override
@@ -28,106 +31,48 @@ public class ProductService implements IProductService{
 
     @Override
     public void deleteProductById(Long id) {
-        productRepository.findById(id).ifPresent(productRepository::delete);
+        productRepository.findById(id)
+                .ifPresentOrElse(productRepository::delete,
+                        () ->  {throw new ProductNotFoundException("Product not found!");});
     }
 
     @Override
     public void updateProduct(Product product, Long productId) {
-
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepository.findAll();
     }
 
     @Override
     public List<Product> getProductsByCategory(String category) {
-        return List.of();
+        return productRepository.findByCategoryName(category);
     }
 
     @Override
     public List<Product> getProductsByBrand(String brand) {
-        return List.of();
+        return productRepository.findByBrand(brand);
     }
 
     @Override
     public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
-        return List.of();
+        return productRepository.findByCategoryNameAndBrand(category, brand);
     }
 
     @Override
     public List<Product> getProductsByName(String name) {
-        return List.of();
+        return productRepository.findByName(name);
     }
 
     @Override
-    public List<Product> getProductsByBrandAndName(String category, String name) {
-        return List.of();
+    public List<Product> getProductsByBrandAndName(String brand, String name) {
+        return productRepository.findByBrandAndName(brand, name) ;
     }
 
     @Override
     public Long countProductByBrandAndName(String brand, String name) {
-        return 0;
+        return productRepository.countByBrandAndName(brand, name) ;
     }
 
-    @Override
-    public Product updateProductPrice(Long productId, BigDecimal newPrice) {
-        return null;
-    }
-
-    @Override
-    public void updateProductInventory(Long productId, Integer newInventory) {
-
-    }
-
-    @Override
-    public List<Product> getProductsInPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        return List.of();
-    }
-
-    @Override
-    public List<Product> searchProducts(String keyword) {
-        return List.of();
-    }
-
-    @Override
-    public List<Product> getTopSellingProducts(int limit) {
-        return List.of();
-    }
-
-    @Override
-    public void addImageToProduct(Long productId, Image image) {
-
-    }
-
-    @Override
-    public void removeImageFromProduct(Long productId, Long imageId) {
-
-    }
-
-    @Override
-    public List<Product> getProductsByPopularity() {
-        return List.of();
-    }
-
-    @Override
-    public List<Product> getProductsByRating(Double minRating) {
-        return List.of();
-    }
-
-    @Override
-    public void clearInventory(Long productId) {
-
-    }
-
-    @Override
-    public void markProductAsFeatured(Long productId) {
-
-    }
-
-    @Override
-    public void unmarkProductAsFeatured(Long productId) {
-
-    }
 }
